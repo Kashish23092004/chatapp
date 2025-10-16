@@ -22,8 +22,8 @@ const Right = () => {
             
             {/* Scrollable Content Area */}
             <div className="flex-1 bg-slate-600 overflow-y-auto no-scrollbar">
-               {/* {<Text />}*/}
-                <Notext/>
+               {<Text />}
+                {/*<Notext/>*/}
             </div>
             {/*input area */}
              <Input/>
