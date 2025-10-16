@@ -1,5 +1,5 @@
 import React from 'react'
-import { CgLogOut } from "react-icons/cg";
+import {CgLogOut} from 'react-icons/cg'
 const Messge = () => {
   return (
 
@@ -153,9 +153,28 @@ const Messge = () => {
  <h1 className='text-slate-600 poppins-medium text-sm'>kashish23@gmail.com</h1>
 </div>
     </div>
+  <div className="flex">
+  <button
+    className="
+      flex
+      items-center
+      justify-center
+      gap-2
+      w-[80%]
+      mx-auto
+      py-2
+      bg-red-100
+      text-red-600
+      rounded-full
+      hover:bg-red-200
+      transition
+    "
+  >
+    <CgLogOut className="text-2xl" />
+    <span className="text-lg poppins-medium">Logout</span>
+  </button>
 </div>
-<div className='flex'>
-    <p className='text-4xl hover:bg-slate-200 rounded-full p-[2%] m-[2%]'><CgLogOut /></p>
+
 </div>
     </div>
   )
