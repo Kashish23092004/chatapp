@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import User from "../Model/User.model";
+import User from "../Model/User.model.js";
 
 export const signup = async (req, res) => {
     const { Fullname, Email, Password, confirmPassword } = req.body;

@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv'
 import mongoose from 'mongoose';
-import userRoutes from './Routes/temp.js';
+import TestRoutes from './Routes/Test.Routes.js'
 const app = express();
 app.use(express.json());
 dotenv.config();
@@ -11,6 +11,7 @@ mongoose.connect(url)
   .then(() => console.log('Connected to MongoDB'))
   .catch(error => console.error('Error connecting to MongoDB:', error.message));
 
+app.use('/test', TestRoutes); 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
