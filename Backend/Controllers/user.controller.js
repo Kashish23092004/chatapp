@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import User from "../Model/User.model.js";
-
+import bcrypt from 'bcrypt'
+import createTokenAndSaveCookie from '../jwt/generatetoken.js'
 export const signup = async (req, res) => {
     const { Fullname, Email, Password, confirmPassword } = req.body;
     try {
@@ -11,11 +12,13 @@ export const signup = async (req, res) => {
             return res.status(400).json({ message: 'password must be at least 6 characters long' })
         }
         const existingUser = await User.findOne({ Email: Email })
+        const hashPassword = await bcrypt.hash(Password,10);
         if (existingUser) {
             return res.status(400).json({ message: 'user with this email already exists' })
         }
-        const newUser = new User({ Fullname, Email, Password });
+        const newUser = new User({ Fullname, Email, Password:hashPassword });
         await newUser.save();
+        createTokenAndSaveCookie(newUser._id,res);
         res.status(201).json({ message: 'user created succesfully', User: newUser })
     }
     catch (error) {
