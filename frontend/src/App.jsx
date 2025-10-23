@@ -1,5 +1,5 @@
 import { useAuth } from '../context/AuthProvider.jsx';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Mainchat from './components/Mainchat.jsx';
 import Signup from './components/Signup.jsx';
 import Signin from './components/Signin.jsx';
@@ -19,12 +19,12 @@ function App() {
               <Mainchat />
             </div>
           ) : (
-            <Signin />
+            <Navigate to={'/login'}/>
           )
         }
       />
-      <Route path='/signup' element={<Signup />} />
-      <Route path='/login' element={<Signin />} />
+      <Route path='/signup' element={authUser  ? <Navigate to='/' /> : <Signup />} />
+      <Route path='/login' element={authUser  ? <Navigate to='/' /> : <Signin />} />
     </Routes>
   );
 }
