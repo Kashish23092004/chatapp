@@ -19,7 +19,13 @@ export const signup = async (req, res) => {
         const newUser = new User({ Fullname, Email, Password:hashPassword });
         await newUser.save();
         createTokenAndSaveCookie(newUser._id,res);
-        res.status(201).json({ message: 'user created succesfully', User: newUser })
+        res.status(201).json({ message: 'user created succesfully', User: {
+                 User: {
+                _id: newUser._id,
+                Email: newUser.Email,
+                Fullname: newUser.Fullname
+            }
+        } })
     }
     catch (error) {
         res.status(500).json({ message: 'internal server error', error: error.message })

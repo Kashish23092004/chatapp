@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useAuth } from '../../context/AuthProvider';
 
 const mainBg = '#565f70';
 const cardBg = '#f9fbfd';
@@ -55,6 +56,8 @@ const Signup = () => {
 
   const [animate, setAnimate] = useState(false);
   const [hover, setHover] = useState(false);
+  const { authUser, setAuthUser } = useAuth();
+
 
   const [confirmError, setConfirmError] = useState('');
 
@@ -90,11 +93,12 @@ const Signup = () => {
     .then(response => {
       console.log(response.data);
       alert('Signup successful!');
-      localStorage.setItem('userEmail',form.Email);
+      localStorage.setItem('lonelyu',JSON.stringify(response.data));
+      setAuthUser(response.data);
     })
     .catch(error=>{
         if(error.response){
-            alert(`signup failed : ${error.response.data.message}`);
+            alert(`${error.response.data.message}`);
         }
     })
 
@@ -129,7 +133,7 @@ const Signup = () => {
         }}
       >
         <h2 style={{ color: accent, marginBottom: '20px', fontWeight: 700, fontSize: 26 }}>
-          lonelyu Signup
+        Signup
         </h2>
         <input
           type="text"
