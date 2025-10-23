@@ -10,8 +10,10 @@ const secureRoute = async (req, res, next) => {
 
     let decoded;
     try {
-      decoded = jwt.verify(token, process.env.JWT_TOKEN);
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+
     } catch (error) {
+      console.log('TOKEN:', token);
       return res.status(401).json({ error: 'Token is not valid' });
     }
 
