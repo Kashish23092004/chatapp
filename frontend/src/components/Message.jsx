@@ -1,10 +1,10 @@
-import React from 'react'
-import { CgLogOut } from 'react-icons/cg'
-import Avatar from './Avatar'
-import USERGETALLUSERS from '../hooks/USERGETALLUSERS.js'
-import { useAuth } from '../../context/AuthProvider'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import React from 'react';
+import { CgLogOut } from 'react-icons/cg';
+import Avatar from './Avatar.jsx';
+import USERGETALLUSERS from '../hooks/USERGETALLUSERS.js';
+import { useAuth } from '../../context/AuthProvider.jsx';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Message = () => {
   const [allUsers, loading] = USERGETALLUSERS(); 
@@ -49,7 +49,6 @@ const Message = () => {
             <Avatar 
               key={user._id} 
               user={user}
-              onClick={() => console.log('Selected user:', user)}
             />
           ))
         ) : (
@@ -79,7 +78,7 @@ const Message = () => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Message
+export default Message;

@@ -32,6 +32,7 @@ const secureRoute = async (req, res, next) => {
 
     console.log('✅ User authenticated:', user.Email);
     req.user = user;
+    req.userId = user._id; // ⭐ ADD THIS LINE - VERY IMPORTANT!
     next();
   } catch (error) {
     console.error('❌ Error in secureRoute:', error);

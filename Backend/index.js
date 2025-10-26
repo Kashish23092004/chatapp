@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import testRoutes from './Routes/Test.Routes.js';
+import messageRoutes from './Routes/Message.Routes.js';
 
 dotenv.config();
 
@@ -46,7 +47,7 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: 'Something went wrong!', error: err.message });
 });
-
+app.use('/api/messages', messageRoutes);
 const PORT = process.env.PORT || 3100;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);

@@ -1,6 +1,6 @@
 import React from 'react'
 import Search from './Search'
-import Message from './Messge'
+import Message from './Message'
 
 const Left = () => {
   return (
