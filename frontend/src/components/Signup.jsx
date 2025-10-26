@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 const mainBg = '#565f70';
 const cardBg = '#f9fbfd';
@@ -56,9 +57,8 @@ const Signup = () => {
 
   const [animate, setAnimate] = useState(false);
   const [hover, setHover] = useState(false);
-  const { authUser, setAuthUser } = useAuth();
-
-
+  const { setAuthUser } = useAuth();
+  const navigate = useNavigate();
   const [confirmError, setConfirmError] = useState('');
 
   const handleChange = (e) => {
@@ -68,44 +68,54 @@ const Signup = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (form.Password !== form.confirmPassword) {
-    setConfirmError('Passwords do not match');
-    return; 
-  }
+    if (form.Password !== form.confirmPassword) {
+      setConfirmError('Passwords do not match');
+      return;
+    }
 
-  setAnimate(true);
-  
-  setTimeout(() => {
-    setAnimate(false);
-  }, 300);
+    setAnimate(true);
+    setTimeout(() => {
+      setAnimate(false);
+    }, 300);
 
-  const UserInfo = {
-    Fullname: form.Fullname,
-    Email: form.Email,
-    Password: form.Password,
-    confirmPassword: form.confirmPassword
-  };
+    const UserInfo = {
+      Fullname: form.Fullname,
+      Email: form.Email,
+      Password: form.Password,
+      confirmPassword: form.confirmPassword
+    };
 
-  axios.post('http://localhost:3500/test/signup', UserInfo)
-    .then(response => {
-      console.log(response.data);
+    try {
+      const response = await axios.post(
+        "http://localhost:3100/api/test/signup",
+        UserInfo,
+        { withCredentials: true }
+      );
+      
+      console.log('Signup response:', response.data);
+      
+      const userData = {
+        _id: response.data._id,
+        Email: response.data.Email,
+        Fullname: response.data.Fullname
+      };
+      
+      localStorage.setItem('lonelyu', JSON.stringify(userData));
+      setAuthUser(userData);
       alert('Signup successful!');
-      localStorage.setItem('lonelyu',JSON.stringify(response.data));
-      setAuthUser(response.data);
-    })
-    .catch(error=>{
-        if(error.response){
-            alert(`${error.response.data.message}`);
-        }
-    })
-
-    
-  
-};
-
+      navigate('/');
+    } catch (error) {
+      console.error('Signup error:', error);
+      if (error.response) {
+        alert(`${error.response.data.message}`);
+      } else {
+        alert('Signup failed. Please try again.');
+      }
+    }
+  };
 
   let dynamicButtonStyle = buttonStyle;
   if (animate) {
@@ -133,7 +143,7 @@ const Signup = () => {
         }}
       >
         <h2 style={{ color: accent, marginBottom: '20px', fontWeight: 700, fontSize: 26 }}>
-        Signup
+          Signup
         </h2>
         <input
           type="text"
@@ -142,6 +152,7 @@ const Signup = () => {
           value={form.Fullname}
           onChange={handleChange}
           style={inputStyle}
+          required
         />
         <input
           type="email"
@@ -150,6 +161,7 @@ const Signup = () => {
           value={form.Email}
           onChange={handleChange}
           style={inputStyle}
+          required
         />
         <input
           type="password"
@@ -158,6 +170,7 @@ const Signup = () => {
           value={form.Password}
           onChange={handleChange}
           style={inputStyle}
+          required
         />
         <input
           type="password"
@@ -166,6 +179,7 @@ const Signup = () => {
           value={form.confirmPassword}
           onChange={handleChange}
           style={inputStyle}
+          required
         />
         {confirmError && <div style={{ color: 'red', marginBottom: '15px' }}>{confirmError}</div>}
         <div style={{ margin: '10px 0', fontSize: 15 }}>

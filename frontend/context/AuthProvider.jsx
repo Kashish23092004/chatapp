@@ -1,21 +1,31 @@
-import React, { useState, createContext, useContext } from 'react';
-import cookies from 'js-cookie';
+import React, { useState, createContext, useContext, useEffect } from 'react';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const initialState = cookies.get("just") || localStorage.getItem("lonelyu");
+  const getInitialAuth = () => {
+    const stored = localStorage.getItem("lonelyu");
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch (error) {
+        console.error("Invalid auth data format:", error);
+        localStorage.removeItem("lonelyu");
+        return null;
+      }
+    }
+    return null;
+  };
 
-  let parsedState;
-  try {
-    parsedState = initialState ? JSON.parse(initialState) : undefined;
-  } catch (error) {
-    console.error("Invalid auth data format:", error);
-    parsedState = undefined;
-  }
+  const [authUser, setAuthUser] = useState(getInitialAuth);
 
-  const [authUser, setAuthUser] = useState(parsedState);
-
+  useEffect(() => {
+    if (authUser) {
+      localStorage.setItem("lonelyu", JSON.stringify(authUser));
+    } else {
+      localStorage.removeItem("lonelyu");
+    }
+  }, [authUser]);
 
   return (
     <AuthContext.Provider value={{ authUser, setAuthUser }}>
